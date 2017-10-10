@@ -177,7 +177,7 @@ def extract_lane_lines(imshape, lines):
 
 
 def return_y_position(y_position):
-    # It needs to be lower half of the picture
+    # It needs to be lover half of the picture
     return y_position * 0.6
 
 
