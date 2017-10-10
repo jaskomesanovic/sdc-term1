@@ -1,1 +1,1 @@
-"# sdc-term1" 
+"# Self driving car nanodegree" 
