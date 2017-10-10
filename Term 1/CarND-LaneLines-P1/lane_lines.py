@@ -280,9 +280,9 @@ def test_videos(video_name):
     white_clip.write_videofile(result_video_output, audio=False)
 
 
-# test_images()
+test_images()
 
-# videos=["solidYellowLeft.mp4","solidWhiteRight.mp4"]
-videos=["solidYellowLeft.mp4"]
+videos=["solidYellowLeft.mp4","solidWhiteRight.mp4"]
+
 for video in videos:
     test_videos(video)
