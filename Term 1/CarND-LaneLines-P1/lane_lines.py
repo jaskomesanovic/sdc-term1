@@ -77,14 +77,17 @@ def draw_lines(img, lines, color=[255, 0, 0], thickness=10):
     if len(img.shape) == 2:  # grayscale image -> make a "color" image out of it
         img = np.dstack((img, img, img))
 
+ 
     for line in lines:
-        for x1, y1, x2, y2 in line:
-             if x1 > 0 and x1 < img.shape[1] and \
-                y1 > 0 and y1 < img.shape[0] and \
-                x2 > 0 and x2 < img.shape[1] and \
-                y2 > 0 and y2 < img.shape[0]:
-                # print(x1, y1, x2, y2)
-                cv2.line(img, (x1, y1), (x2, y2), color, thickness)
+        if len(line[0]) == 4:
+            for x1, y1, x2, y2 in line:
+                if x1 > 0 and x1 < img.shape[1] and \
+                    y1 > 0 and y1 < img.shape[0] and \
+                    x2 > 0 and x2 < img.shape[1] and \
+                    y2 > 0 and y2 < img.shape[0]:
+                    # print(x1, y1, x2, y2)
+                    cv2.line(img, (x1, y1), (x2, y2), color, thickness)
+
     # print(img)
     return img
 
@@ -188,9 +191,9 @@ def get_houg_lines(img, masked_edges):
     rho = 2  # distance resolution in pixels of the Hough grid
     theta = np.pi / 180  # angular resolution in radians of the Hough grid
     # 15 minimum number of votes (intersections in Hough grid cell)
-    threshold = 75
-    min_line_length = 10  # minimum number of pixels making up a line
-    max_line_gap = 90    # maximum gap in pixels between connectable line segments
+    threshold = 30
+    min_line_length = 80  # minimum number of pixels making up a line
+    max_line_gap = 150    # maximum gap in pixels between connectable line segments
     
 
     # Run Hough on edge detected image
@@ -277,8 +280,9 @@ def test_videos(video_name):
     white_clip.write_videofile(result_video_output, audio=False)
 
 
-test_images()
+# test_images()
 
-videos=["solidYellowLeft.mp4","solidWhiteRight.mp4"]
+# videos=["solidYellowLeft.mp4","solidWhiteRight.mp4"]
+videos=["solidYellowLeft.mp4"]
 for video in videos:
     test_videos(video)
