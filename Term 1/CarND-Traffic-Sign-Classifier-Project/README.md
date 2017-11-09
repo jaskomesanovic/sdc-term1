@@ -1,5 +1,3 @@
-###You can use this file as a template for your write up if you want to submit it as a markdown file, but feel free to use some other method and submit a pdf if you prefer.
-
 ---
 
 **Build a Traffic Sign Recognition Project**
@@ -37,7 +35,7 @@ The goals / steps of this project are the following:
 
 ####1. Provide a Writeup / README that includes all the rubric points and how you addressed each one. You can submit your writeup as markdown or pdf. You can use this template as a guide for writing the report. The submission includes the project code.
 
-You're reading it! and here is a link to my [project code](https://github.com/udacity/CarND-Traffic-Sign-Classifier-Project/blob/master/Traffic_Sign_Classifier.ipynb)
+You're reading it! and here is a link to my [project code](https://github.com/jaskomesanovic/sdc-term1/tree/master/Term%201/CarND-Traffic-Sign-Classifier-Project/Traffic_Sign_Classifier.ipynb)
 
 ###Data Set Summary & Exploration
 
@@ -63,14 +61,17 @@ Here is an exploratory visualization of the data set. It is a bar chart showing 
 ####1. Describe how you preprocessed the image data. What techniques were chosen and why did you choose these techniques? Consider including images showing the output of each preprocessing technique. Pre-processing refers to techniques such as converting to grayscale, normalization, etc. (OPTIONAL: As described in the "Stand Out Suggestions" part of the rubric, if you generated additional data for training, describe why you decided to generate additional data, how you generated the data, and provide example images of the additional data. Then describe the characteristics of the augmented training set like number of images in the set, number of images for each class, etc.)
 
 Original training data set is having distribution like on the picture below.
+
 ![alt text][image11]
 
 It is obvious that shown data set is not having normal distribution and that according to it model will behave the same. Which means that it will have more information about certain signs and identify them better. 
 
 My idea was to do data augmentation and to make a little bit better data distribution. After doing data augmentation distribution was like on the picture
+
 ![alt text][image10]
 
 Test Data distribution is similar to the original training data set.
+
 ![alt text][image12]
 
 In original data set number of pictures per sign was from 200 to 2000. In the extended data set it is from 5800 to 7000. Data augmentation has improved our data model significantly which will be explained after.
