@@ -584,7 +584,7 @@ class Lane:
 
         #Curvature
         y_eval = np.max(binary_warped.shape[0])
-        ym_per_pix = 30/720 # meters per pixel in y dimension
+        ym_per_pix = 15/720 # meters per pixel in y dimension
         xm_per_pix = 3.7/700 # meters per pixel in x dimension
 
         # Fit new polynomials to x,y in world space
@@ -597,18 +597,16 @@ class Lane:
         curvature = (left_curverad + right_curverad)/2
         #print(curvature, 'm')
 
-        half_picture=(rightx_base - leftx_base)/2 
-        left_base_pos= ( left_fit_cr[0]*(y_eval**2) + left_fit_cr[1]*y_eval + left_fit_cr[2] - float(binary_warped.shape[1]/2)) * xm_per_pix
-        right_base_pos= abs(((half_picture - binary_warped.shape[1]/2) * xm_per_pix))
+        image_center = np.max(binary_warped.shape[1])/2
+        lane_center = (left_fitx[-1] + right_fitx[-1]) / 2
+        offset = (lane_center - image_center) * xm_per_pix
 
-        #print("Left:",  left_base_pos, 'm',  "Right:",right_base_pos[0], 'm')
-        #print("Left:",  left_fit,  "Right:",right_fit)
         self.line_left.allx=leftx
         self.line_left.ally=lefty
         self.line_left.line_base_pos=leftx_base
         self.line_left.current_fit = left_fit
         self.line_left.radius_of_curvature = curvature
-        self.line_left.line_base_pos = right_base_pos
+        self.line_left.line_base_pos = offset
         self.line_left.detected= is_left_found
 
         self.line_right.allx=rightx
@@ -616,7 +614,7 @@ class Lane:
         self.line_right.line_base_pos=rightx_base
         self.line_right.current_fit = right_fit
         self.line_right.radius_of_curvature = curvature
-        self.line_right.line_base_pos = right_base_pos
+        self.line_right.line_base_pos = offset
         self.line_right.detected= is_right_found
 
         return ploty , left_fitx, right_fitx
@@ -682,49 +680,52 @@ class LanePipeline:
         return result
 
 
-# test_images = glob.glob('./test_images/*.jpg')
-# # Create a new LaneFindingPipeline
-# pipeline = LanePipeline()
+test_images = glob.glob('./test_images/*.jpg')
+# Create a new LaneFindingPipeline
 
-# for img_path in test_images:
-#     _,img_name = os.path.split(img_path)
+
+for img_path in test_images:
+    _,img_name = os.path.split(img_path)
     
-#     # Read image
-#     img = mpimg.imread(img_path)
+    pipeline = LanePipeline()
+    # Read image
+    img = mpimg.imread(img_path)
     
  
     
-#     # Run it on the image
-#     img_out = pipeline.execute(img)
+    # Run it on the image
+    img_out = pipeline.execute(img)
 
     
     
-#     # Display
-#     plt.figure();
-#     plt.imshow(img_out); 
-#     plt.axis('off');
-#     plt.title(img_name);
+    # Display
+    plt.figure();
+    plt.imshow(img_out); 
+    plt.axis('off');
+    plt.title(img_name);
 
-test_videos = glob.glob('./project_video.mp4')
+# test_videos = glob.glob('./project_video.mp4')
 
 
-video= os.path.join(os.getcwd(), 'harder_challenge_video.mp4')
-#for video in test_videos:
+# video= os.path.join(os.getcwd(), 'harder_challenge_video.mp4')
+# #for video in test_videos:
    
-       # Create a new LaneFindingPipeline
-pipeline = LanePipeline()      
-# Read video
-clip = VideoFileClip(video)
+#        # Create a new LaneFindingPipeline
+# pipeline = LanePipeline()      
+# # Read video
+# clip = VideoFileClip(video)
 
-# Process video
-clip_processed = clip.fl_image(pipeline.execute) #NOTE: this function expects color images!!
+# # Process video
+# clip_processed = clip.fl_image(pipeline.execute) #NOTE: this function expects color images!!
 
-# Save to disk
-_,video_name = os.path.split(video)
-out_name = os.path.join(output_images_dir, video_name)
-clip_processed.write_videofile(out_name, audio=False)
+# # Save to disk
+# _,video_name = os.path.split(video)
+# out_name = os.path.join(output_images_dir, video_name)
+# clip_processed.write_videofile(out_name, audio=False)
 
 # Display in the notebook
-print(out_name)
+# print(out_name)
 
 # plt.show()
+
+plt.show()
