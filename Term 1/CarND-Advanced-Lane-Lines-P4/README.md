@@ -176,15 +176,15 @@ right_curverad = ((1 + (2*right_fit_cr[0]*y_eval*ym_per_pix + right_fit_cr[1])**
 curvature = (left_curverad + right_curverad)/2
 ```
 
-as we can see we need to have y value of the image (y_eval) and polynomials in the world space. Formula for the curvature is shown on the lecture. ym_per_pix represents meters per pixels. We have assumed that our point of interested is 700 px and that represent about 30 meters so we can calculate our ratio.
+as we can see we need to have y value of the image (y_eval) and polynomials in the world space. Formula for the curvature is shown on the lecture. ym_per_pix represents meters per pixels. We have assumed that our point of interested is 700 px and that represent about 15 meters so we can calculate our ratio.
 After we calculate curvatures for both lines we take average of both to be final curvature number.
 
 For the position of the car in the image we used code from below
 
 ```python
-half_picture=(rightx_base - leftx_base)/2
-right_base_pos= abs(((half_picture - binary_warped.shape[1]/2) * xm_per_pix)) - 1.5
-
+image_center = np.max(binary_warped.shape[1])/2
+lane_center = (left_fitx[-1] + right_fitx[-1]) / 2
+offset = (lane_center - image_center) * xm_per_pix
 ```
 ![alt text][image13]
 
