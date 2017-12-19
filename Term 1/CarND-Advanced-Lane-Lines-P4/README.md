@@ -182,7 +182,7 @@ After we calculate curvatures for both lines we take average of both to be final
 For the position of the car in the image we used code from below
 
 ```python
-image_center = np.max(binary_warped.shape[1])/2
+image_center = binary_warped.shape[1]/2
 lane_center = (left_fitx[-1] + right_fitx[-1]) / 2
 offset = (lane_center - image_center) * xm_per_pix
 ```

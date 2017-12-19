@@ -571,11 +571,11 @@ class Lane:
         left_fit = np.polyfit(lefty, leftx, 2)
         right_fit = np.polyfit(righty, rightx, 2)
         
-        mean_left_fit, is_left_found = self.get_mean_coeff(left_fit,type='l')
-        mean_right_fit, is_right_found = self.get_mean_coeff(right_fit,type='r')
+        # mean_left_fit, is_left_found = self.get_mean_coeff(left_fit,type='l')
+        # mean_right_fit, is_right_found = self.get_mean_coeff(right_fit,type='r')
 
-        left_fit = mean_left_fit
-        right_fit = mean_right_fit
+        # left_fit = mean_left_fit
+        # right_fit = mean_right_fit
 
         # Generate x and y values for plotting
         ploty = np.linspace(0, binary_warped.shape[0]-1, binary_warped.shape[0] )
@@ -583,7 +583,7 @@ class Lane:
         right_fitx = right_fit[0]*ploty**2 + right_fit[1]*ploty + right_fit[2]
 
         #Curvature
-        y_eval = np.max(binary_warped.shape[0])
+        y_eval = binary_warped.shape[0]
         ym_per_pix = 15/720 # meters per pixel in y dimension
         xm_per_pix = 3.7/700 # meters per pixel in x dimension
 
@@ -597,7 +597,7 @@ class Lane:
         curvature = (left_curverad + right_curverad)/2
         #print(curvature, 'm')
 
-        image_center = np.max(binary_warped.shape[1])/2
+        image_center = binary_warped.shape[1]/2
         lane_center = (left_fitx[-1] + right_fitx[-1]) / 2
         offset = (lane_center - image_center) * xm_per_pix
 
@@ -607,7 +607,7 @@ class Lane:
         self.line_left.current_fit = left_fit
         self.line_left.radius_of_curvature = curvature
         self.line_left.line_base_pos = offset
-        self.line_left.detected= is_left_found
+        self.line_left.detected= True    #is_left_found
 
         self.line_right.allx=rightx
         self.line_right.ally=righty
@@ -615,13 +615,13 @@ class Lane:
         self.line_right.current_fit = right_fit
         self.line_right.radius_of_curvature = curvature
         self.line_right.line_base_pos = offset
-        self.line_right.detected= is_right_found
+        self.line_right.detected= True   # is_right_found
 
         return ploty , left_fitx, right_fitx
 
 class LanePipeline:
     def __init__(self):
-        self.average_number=10
+        self.average_number=3
         self.lanes_left = []
         self.lanes_right= []
         self.mean_left=[]
@@ -680,52 +680,46 @@ class LanePipeline:
         return result
 
 
-test_images = glob.glob('./test_images/*.jpg')
-# Create a new LaneFindingPipeline
+# test_images = glob.glob('./test_images/*.jpg')
+# # Create a new LaneFindingPipeline
 
 
-for img_path in test_images:
-    _,img_name = os.path.split(img_path)
+# for img_path in test_images:
+#     _,img_name = os.path.split(img_path)
     
-    pipeline = LanePipeline()
-    # Read image
-    img = mpimg.imread(img_path)
+#     pipeline = LanePipeline()
+#     # Read image
+#     img = mpimg.imread(img_path)
     
  
     
-    # Run it on the image
-    img_out = pipeline.execute(img)
+#     # Run it on the image
+#     img_out = pipeline.execute(img)
 
-    
-    
-    # Display
-    plt.figure();
-    plt.imshow(img_out); 
-    plt.axis('off');
-    plt.title(img_name);
-
-# test_videos = glob.glob('./project_video.mp4')
+#     # Display
+#     plt.figure();
+#     plt.imshow(img_out); 
+#     plt.axis('off');
+#     plt.title(img_name);
 
 
-# video= os.path.join(os.getcwd(), 'harder_challenge_video.mp4')
-# #for video in test_videos:
-   
-#        # Create a new LaneFindingPipeline
-# pipeline = LanePipeline()      
-# # Read video
-# clip = VideoFileClip(video)
+video= os.path.join(os.getcwd(), 'project_video.mp4')
 
-# # Process video
-# clip_processed = clip.fl_image(pipeline.execute) #NOTE: this function expects color images!!
+pipeline = LanePipeline()      
+# Read video
+clip = VideoFileClip(video)
 
-# # Save to disk
-# _,video_name = os.path.split(video)
-# out_name = os.path.join(output_images_dir, video_name)
-# clip_processed.write_videofile(out_name, audio=False)
+# Process video
+clip_processed = clip.fl_image(pipeline.execute) #NOTE: this function expects color images!!
+
+# Save to disk
+_,video_name = os.path.split(video)
+out_name = os.path.join(output_images_dir, video_name)
+clip_processed.write_videofile(out_name, audio=False)
 
 # Display in the notebook
-# print(out_name)
+print(out_name)
 
 # plt.show()
 
-plt.show()
+# plt.show()
